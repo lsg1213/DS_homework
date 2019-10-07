@@ -5,25 +5,27 @@ from time import time
 def compute_average(n):
     data = DynamicArray()
     start = time()
+    append = data.append
     for k in range(n):
-        data.append(None)
+        append(None)
     end = time()
-    return (end - start) / float(n)
+    return (end - start) / n
 
 def compute_incre_average(n):
     data = DynamicArray()
     start = time()
+    append_incremental = data.append_incremental
     for k in range(n):
-        data.append_incremental(None)
+        append_incremental(None)
     end = time()
-    return (end - start) / float(n)
+    return (end - start) / n
 
 class DynamicArray:
     def __init__(self):
         self._n = 0
         self._capacity = 1
         self._A = self._make_array(self._capacity)
-        self._c = 1000 #incremental constant
+        self._c = 1000     #incremental constant
 
     def __len__(self):
         return self._n
@@ -67,7 +69,7 @@ print('-------------------------------------------------------------------------
 i = 100
 print('2. incremental')
 print('--------------------------------------------------------------------------')
-while i <= 100000000:
+while i <= 10000000:
     data = DynamicArray()
     print('data num: {}\t'.format(i) + 'time: {}'.format(compute_incre_average(i)))
     i *= 10

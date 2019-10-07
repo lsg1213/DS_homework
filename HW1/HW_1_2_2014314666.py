@@ -1,3 +1,10 @@
+class Empty(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg
+
 class ArrayStack:
     def __init__(self):
         self._data = []
@@ -13,15 +20,15 @@ class ArrayStack:
 
     def top(self):
         if self.is_empty():
-            raise IndexError('Stack is empty')
+            raise Empty('Stack is empty')
         return self._data[-1]
 
     def pop(self):
         if self.is_empty():
-            raise IndexError('Stack is empty')
+            raise Empty('Stack is empty')
         return self._data.pop()
-
 s = ArrayStack()
+s.pop()
 a = input('put a string which you want to decide palindrome or not\n')
 if len(a) % 2 == 1:
     i = len(a) // 2 + 1
