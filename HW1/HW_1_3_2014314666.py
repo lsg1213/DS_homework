@@ -62,9 +62,16 @@ class ArrayQueue:
         self._size = self._size - 1 + len(self._data) % len(self._data)
         return answer
 
+a = input('Put a string which you want to check: ')
 q = ArrayQueue()
-q.enqueue('h')
-q.add_first('it')
-while not q.is_empty():
-    print(len(q), q.pop())
+for i in range(int(len(a)/2)):
+    q.enqueue(a[i])
+    q.add_first(a[-1-i])
+
+for i in range(int(len(a)/2)):
+    if q.pop() != q.dequeue():
+        print(a + ' is not a palindrome')
+        exit()
+print(a + ' is a palindrome')
+    
     
