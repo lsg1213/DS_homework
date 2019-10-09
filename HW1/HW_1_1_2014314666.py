@@ -25,7 +25,7 @@ class DynamicArray:
         self._n = 0
         self._capacity = 1
         self._A = self._make_array(self._capacity)
-        self._c = 1000     #incremental constant
+        self._c = 10000     #incremental constant
 
     def __len__(self):
         return self._n
@@ -61,7 +61,7 @@ class DynamicArray:
 i = 100
 print('1. doubling')
 print('--------------------------------------------------------------------------')
-while i <= 100000000:
+while i <= 10000000:
     data = DynamicArray()
     print('data num: {}\t'.format(i) + 'time: {}'.format(compute_average(i)))
     i *= 10
