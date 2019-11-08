@@ -72,6 +72,7 @@ class binTree(Node):
         self.equation = ''
         self.tracingDepth = 0
         self.height = 0
+        self.evalList = []
 
     def __len__(self):
         return self._size
@@ -81,6 +82,7 @@ class binTree(Node):
 
     def print_tree(self):    #LRC post-order
         self.__tracingLRC(self.get_root())
+        print()
 
     def __tracingLRC(self,center):
         if center.getLeft() != None:
@@ -89,6 +91,7 @@ class binTree(Node):
             self.__tracingLRC(center.getRight())
 
         print('{} '.format(center.getData()),end='')
+        self.evalList.append(center.getData())
 
     def putData(self, equation):
         self.parenthsisCheck(equation)
@@ -119,24 +122,6 @@ class binTree(Node):
         self.get_root().addLeft(center)
         center.changeParent(self.get_root())
         self.get_root().addRight(Node(s.pop(),None,parent=self.get_root()))
-        
-
-        # if len(equation) == 0:
-        #     return
-        # if center._data.isdigit():
-        #     return
-        # else:
-        #     t = equation.pop()
-        #     if center.getRight() == None:
-        #         center.addRight(Node(t,center._depth+1,parent=center))
-        #         self.makeNode(equation,center.getRight())
-        #         if self.height < center._depth + 1:
-        #             self.height = center._depth + 1
-        #     elif center.getLeft() == None:
-        #         center.addRight(Node(t,center._depth+1,parent=center))
-        #         self.makeNode(equation,center.getLeft())
-        #         if self.height < center._depth + 1:
-        #             self.height = center._depth + 1
 
     def parenthsisCheck(self, equation):
         s = ArrayStack()
@@ -202,9 +187,39 @@ class binTree(Node):
 
         return res
 
+    def operate(self,a,b,oper):
+        if oper == '+':
+            return a + b
+        elif oper == '-':
+            return a - b
+        elif oper == '*':
+            return a * b
+        elif oper == '/':
+            return a / b
+    
+    def __evaluateTraversal(self, center):
+        if center.getLeft() != None:
+            self.__evaluateTraversal(center.getLeft())
+        if center.getRight() != None:
+            self.__evaluateTraversal(center.getRight())
+
+        self.evalList.append(center.getData())
+    def evaluate(self, center):
+        self.__evaluateTraversal(self.get_root())
+        s = ArrayStack()
+        for i in self.evalList:
+            if not i.isdigit():
+                b = int(s.pop())
+                a = int(s.pop())
+                s.push(self.operate(a,b,i))
+            else:
+                s.push(i)
+        print(s.pop())
+                
     
 if __name__ == "__main__":
     
     tree = binTree()
-    tree.putData('(2+1)*(6+(7+4-1)-5)-3')
+    tree.putData(input('식을 입력하세요\n'))
     tree.print_tree()
+    tree.evaluate(tree.get_root())
