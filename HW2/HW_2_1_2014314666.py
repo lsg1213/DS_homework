@@ -79,18 +79,16 @@ class binTree(Node):
     def get_root(self):
         return self._data
 
-    def print_tree(self, center):    #LRC
-        self.tracingDepth = 0
+    def print_tree(self):    #LRC post-order
+        self.__tracingLRC(self.get_root())
+
+    def __tracingLRC(self,center):
         if center.getLeft() != None:
-            self.LCRTracing(center.getLeft())
+            self.__tracingLRC(center.getLeft())
         if center.getRight() != None:
-            self.LCRTracing(center.getRight())
-        print('{} '.format(center._data))
+            self.__tracingLRC(center.getRight())
 
-    def LCRTracing(self, center):
-
-    def evaluate(self):
-        pass
+        print('{} '.format(center.getData()))
 
     def putData(self, equation):
         self.parenthsisCheck(equation)
@@ -98,7 +96,7 @@ class binTree(Node):
         self._data = Node(equation.pop(), 0)
         self.makeNode(equation, self.get_root())
     
-    def makeNode(self, equation, root):
+    def makeNode(self, equation):
         s = ArrayStack()
         for i in equation:
             if not i.isdigit():
@@ -107,11 +105,18 @@ class binTree(Node):
                 if type(right) != Node:
                     right = Node(right, None, parent=center)
                 else:
-                    right.
+                    right.changeParent(center)
                 left = s.pop()
                 if type(left) != Node:
                     left = Node(left, None, parent=Node)
+                else:
+                    left.changeParent(center)
+                center.addRight = right
+                center.addLeft = left
+                s.push(center)
+            else:
                 s.push(i)
+        self._data = s.pop()
 
         # if len(equation) == 0:
         #     return
