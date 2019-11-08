@@ -67,6 +67,8 @@ class binTree(Node):
         self._data = None
         self._size = 1
         self.equation = ''
+        self.tracingDepth = 0
+        self.height = 0
 
     def __len__(self):
         return self._size
@@ -75,12 +77,15 @@ class binTree(Node):
         return self._data
 
     def print_tree(self, center):    #LRC
+        self.tracingDepth = 0
         if center.getLeft() != None:
-            self.print_tree(center.getLeft())
+            self.LCRTracing(center.getLeft())
         if center.getRight() != None:
-            self.print_tree(center.getRight())
+            self.LCRTracing(center.getRight())
         print('{} '.format(center._data))
-        
+
+    def LCRTracing(self, center):
+
     def evaluate(self):
         pass
 
@@ -100,9 +105,13 @@ class binTree(Node):
             if center.getRight() == None:
                 center.addRight(Node(t,center._depth+1,parent=center))
                 self.makeNode(equation,center.getRight())
+                if self.height < center._depth + 1:
+                    self.height = center._depth + 1
             elif center.getLeft() == None:
                 center.addRight(Node(t,center._depth+1,parent=center))
                 self.makeNode(equation,center.getLeft())
+                if self.height < center._depth + 1:
+                    self.height = center._depth + 1
 
     def parenthsisCheck(self, equation):
         s = ArrayStack()
