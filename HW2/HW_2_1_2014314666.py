@@ -87,13 +87,22 @@ class binTree(Node):
     def putData(self, equation):
         self.parenthsisCheck(equation)
         equation = self.postfix(equation)
-        self._data = Node(equation[-1], 0)
-        self.makeNode()
+        self._data = Node(equation.pop(), 0)
+        self.makeNode(equation, self.get_root())
     
-    def makeNode(self, equation):
-        rec = self.get_root()
-        for i in range(len(equation)-1,-1,-1):
-            if equation[i] == '+' or equation[i] == '*' or equation == '-' or equation == '/':
+    def makeNode(self, equation, center):
+        if len(equation) == 0:
+            return
+        if center._data.isdigit():
+            return
+        else:
+            t = equation.pop()
+            if center.getRight() == None:
+                center.addRight(Node(t,center._depth+1,parent=center))
+                self.makeNode(equation,center.getRight())
+            elif center.getLeft() == None:
+                center.addRight(Node(t,center._depth+1,parent=center))
+                self.makeNode(equation,center.getLeft())
 
     def parenthsisCheck(self, equation):
         s = ArrayStack()
