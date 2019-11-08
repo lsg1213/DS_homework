@@ -61,6 +61,9 @@ class Node:
     def addRight(self, right):
         self._right = right
 
+    def changeParent(self, parent):
+        self._parent = parent
+
 
 class binTree(Node):
     def __init__(self):
@@ -95,23 +98,37 @@ class binTree(Node):
         self._data = Node(equation.pop(), 0)
         self.makeNode(equation, self.get_root())
     
-    def makeNode(self, equation, center):
-        if len(equation) == 0:
-            return
-        if center._data.isdigit():
-            return
-        else:
-            t = equation.pop()
-            if center.getRight() == None:
-                center.addRight(Node(t,center._depth+1,parent=center))
-                self.makeNode(equation,center.getRight())
-                if self.height < center._depth + 1:
-                    self.height = center._depth + 1
-            elif center.getLeft() == None:
-                center.addRight(Node(t,center._depth+1,parent=center))
-                self.makeNode(equation,center.getLeft())
-                if self.height < center._depth + 1:
-                    self.height = center._depth + 1
+    def makeNode(self, equation, root):
+        s = ArrayStack()
+        for i in equation:
+            if not i.isdigit():
+                center = Node(i, None)
+                right = s.pop()
+                if type(right) != Node:
+                    right = Node(right, None, parent=center)
+                else:
+                    right.
+                left = s.pop()
+                if type(left) != Node:
+                    left = Node(left, None, parent=Node)
+                s.push(i)
+
+        # if len(equation) == 0:
+        #     return
+        # if center._data.isdigit():
+        #     return
+        # else:
+        #     t = equation.pop()
+        #     if center.getRight() == None:
+        #         center.addRight(Node(t,center._depth+1,parent=center))
+        #         self.makeNode(equation,center.getRight())
+        #         if self.height < center._depth + 1:
+        #             self.height = center._depth + 1
+        #     elif center.getLeft() == None:
+        #         center.addRight(Node(t,center._depth+1,parent=center))
+        #         self.makeNode(equation,center.getLeft())
+        #         if self.height < center._depth + 1:
+        #             self.height = center._depth + 1
 
     def parenthsisCheck(self, equation):
         s = ArrayStack()
