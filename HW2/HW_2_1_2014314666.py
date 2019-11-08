@@ -88,13 +88,13 @@ class binTree(Node):
         if center.getRight() != None:
             self.__tracingLRC(center.getRight())
 
-        print('{} '.format(center.getData()))
+        print('{} '.format(center.getData()),end='')
 
     def putData(self, equation):
         self.parenthsisCheck(equation)
         equation = self.postfix(equation)
         self._data = Node(equation.pop(), 0)
-        self.makeNode(equation, self.get_root())
+        self.makeNode(equation)
     
     def makeNode(self, equation):
         s = ArrayStack()
@@ -111,12 +111,15 @@ class binTree(Node):
                     left = Node(left, None, parent=Node)
                 else:
                     left.changeParent(center)
-                center.addRight = right
-                center.addLeft = left
+                center.addRight(right)
+                center.addLeft(left)
                 s.push(center)
             else:
                 s.push(i)
-        self._data = s.pop()
+        self.get_root().addLeft(center)
+        center.changeParent(self.get_root())
+        self.get_root().addRight(Node(s.pop(),None,parent=self.get_root()))
+        
 
         # if len(equation) == 0:
         #     return
@@ -203,5 +206,5 @@ class binTree(Node):
 if __name__ == "__main__":
     
     tree = binTree()
-    print(tree.postfix('(2+1)*(6+(7+4-1)-5)-3'))
     tree.putData('(2+1)*(6+(7+4-1)-5)-3')
+    tree.print_tree()
