@@ -220,6 +220,11 @@ class binTree(Node):
 if __name__ == "__main__":
     
     tree = binTree()
-    tree.putData(input('식을 입력하세요\n'))
+    while True:
+        try:
+            tree.putData(input('식을 입력하세요\n'))
+            break
+        except:
+            print('다시 입력하세요')
     tree.print_tree()
     tree.evaluate(tree.get_root())
