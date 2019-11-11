@@ -119,33 +119,57 @@ class binTree(Node):
                 s.push(center)
             else:
                 s.push(i)
-        self.get_root().addLeft(center)
-        center.changeParent(self.get_root())
-        self.get_root().addRight(Node(s.pop(),None,parent=self.get_root()))
+
+        if len(s) == 2:
+            b = s.pop()
+            a = s.pop()
+            if type(b) == Node:
+                self.get_root().addRight(b)
+            else:
+                self.get_root().addRight(Node(b,None,parent=self.get_root()))
+            if type(a) == Node:
+                self.get_root().addLeft(a)
+            else:
+                self.get_root().addLeft(Node(a,None,parent=self.get_root()))
+
+        # self.get_root().addLeft(center)
+        # center.changeParent(self.get_root())
+        # self.get_root().addRight(Node(s.pop(),None,parent=self.get_root()))
+        # if len(s) == 1:
+        #     a = s.pop()
+        #     self.get_root().addLeft(a)
+        #     center.changeParent(self.get_root())
+        #     self.get_root().addRight(Node(a,None,parent=self.get_root()))
+        # elif len(s) == 2:
+        #     a = s.pop()
+        #     b = s.pop()
+        #     if a == None:
+        #         self.get_root().addLeft(Node(a,None, parent = self.get_root()))
+        #     else:
+        #         self.get_root().addLeft(a)
+        #     if b == None:
+        #         self.get_root().addRight(Node(b,None,parent=self.get_root()))
+        #     else:
+        #         self.get_root().addRight(b)
 
     def parenthsisCheck(self, equation):
         s = ArrayStack()
-        tmp = []
         #괄호 여닫기 처리
         for i in equation:
-            if i == '(' or i == ')':
+            if i == '(':
                 s.push(i)
-
-        if len(s) % 2 == 1:
-            raise Parenthesis('number of parenthsis is odd!')
-
-        for i in range(len(s) // 2):
-            tmp.append(s.pop())
-        for i in range(len(s) // 2):
-            t = s.pop()
-            if not (t == '(' and tmp[i] == ')'):
-                raise Parenthesis('Wrong equation!')
+            elif i == ')':
+                s.pop()
+        if not s.is_empty():
+            raise Parenthesis('Wrong equation!')
 
     def priority(self, arg):
         if arg == '*' or arg == '/':
             return 5
         elif arg == '+' or arg == '-':
             return 3
+        else:
+            return 1
 
     def postfix(self, equation):
         tmp = []
@@ -176,13 +200,14 @@ class binTree(Node):
                         else:
                             break
                 else:
-                    if not s.is_empty() and s.top() != '(':
-                        if self.priority(s.top()) >= self.priority(i):
-                            res.append(s.pop())
-                            s.push(i)
-                    else:
-                        s.push(i)
-        if not s.is_empty():
+                    p = self.priority(i)
+                    while len(s) > 0:
+                        top = s.top()
+                        if self.priority(top) < p:
+                            break
+                        res.append(s.pop())            
+                    s.push(i)
+        while not s.is_empty():
             res.append(s.pop())
 
         return res
@@ -205,8 +230,9 @@ class binTree(Node):
 
         self.evalList.append(center.getData())
     def evaluate(self, center):
-        self.__evaluateTraversal(self.get_root())
+        # self.__evaluateTraversal(self.get_root())
         s = ArrayStack()
+
         for i in self.evalList:
             if not i.isdigit():
                 b = int(s.pop())
@@ -226,5 +252,7 @@ if __name__ == "__main__":
             break
         except:
             print('다시 입력하세요')
+    # tree.putData('(2+1)*(6+(7+4-1)-5)-3')
+    # tree.putData('2*2')
     tree.print_tree()
     tree.evaluate(tree.get_root())
